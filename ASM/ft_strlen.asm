@@ -2,21 +2,15 @@ global ft_strlen
 
 section .text
 
-
-
 ft_strlen:
-    mov     rbx, rdi
-    xor rcx, rcx
+    xor     rax, rax
 
 .count_char:
     
-    cmp byte [rbx], 0
-    je .return
-    cmp rsi, 0
-    inc rbx
-    inc rcx
-    jmp .count_char
+    cmp     byte [rdi + rax], 0
+    je      .return
+    inc     rax
+    jmp     .count_char
 
 .return:
-    mov rax, rcx
     ret 

@@ -1,20 +1,14 @@
 TARGET = main
 
-
 ASM_FILES = $(wildcard ASM/*.asm)
-C_FILES = main.c                     
+C_FILES = main.c
 OBJ = $(ASM_FILES:.asm=.o) $(C_FILES:.c=.o)
 
-# Compilateurs et options
 CC = clang
-CCFLAGS = -g -Wall -Wextra -Werror  
+CCFLAGS = -g -Wall -Wextra -Werror -fPIE 
 ASM = nasm
-ASMFLAGS = -f elf64 -g -F dwarf 
+ASMFLAGS = -f elf64 -g -F dwarf
 
-LD = clang        
-LDFLAGS =
-
-# Règles
 all: $(TARGET)
 
 %.o: %.asm
@@ -24,15 +18,14 @@ all: $(TARGET)
 	$(CC) $(CCFLAGS) -c -o $@ $<
 
 $(TARGET): $(OBJ)
-	$(CC) $(CCFLAGS) $(LDFLAGS)   -o $@ $^
+	$(CC) $(CCFLAGS) -pie -o $@ $^
 
 clean:
 	rm -f $(OBJ)
 
 fclean: clean
 	rm -f $(TARGET)
-	
 
-re: clean all
+re: fclean all
 
-.PHONY: all clean re
+.PHONY: all clean fclean re
